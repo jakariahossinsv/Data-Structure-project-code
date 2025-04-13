@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+// Structure for BST node
+struct node {
+int data;
+struct node *left;
+struct node *right;
+};
+// Function to create a new node
+struct node* createNode(int value) {
+struct node* newNode = (struct node*)malloc(sizeof(struct node));
+newNode->data = value;
+newNode->left = NULL;
+newNode->right = NULL;
+return newNode;
+}
+// Function to insert a node in BST
+struct node* insert(struct node* root, int value) {
+if (root == NULL) {
+return createNode(value);
+}
+if (value < root->data) {
+root->left = insert(root->left, value);
+} else if (value > root->data) {
+root->right = insert(root->right, value);
+}
+return root;
+}
+// Function to search a value in BST with step-by-step output
+void searchWithSteps(struct node* root, int value) {
+if (root == NULL) {
+printf("Value %d not found in BST.\n", value);
+return;
+}
+printf("Current node: %d", root->data);
+if (root->data == value) {
+printf(" → Found the value!\n");
+return;
+} else if (value < root->data) {
+printf(" → %d < %d, moving left\n", value, root->data);
+searchWithSteps(root->left, value);
+} else {
+printf(" → %d > %d, moving right\n", value, root->data);
+searchWithSteps(root->right, value);
+}
+}
+// Inorder traversal (left-root-right)
+void inorder(struct node* root) {
+if (root != NULL) {
+inorder(root->left);
+printf("%d ", root->data);
+inorder(root->right);
+}}
+int main() {
+struct node* root = NULL;
+// Mr. Arif's selected numbers based on his student ID ending with 63
+int numbers[] = {26, 45, 99, 32, 36, 111, 86, 117, 52, 135};
+int size = sizeof(numbers) / sizeof(numbers[0]);
+// Insert all numbers into BST
+for (int i = 0; i < size; i++) {
+root = insert(root, numbers[i]);
+}
+printf("BST created with Mr. Arif's numbers:\n");
+printf("Inorder traversal (sorted order): ");
+inorder(root);
+printf("\n\n");
+// User interaction for searching values
+int searchValue;
+char choice;
+do {
+printf("\nEnter a value to search in the BST: ");
+scanf("%d", &searchValue);
+printf("\nSearching for %d in the BST:\n", searchValue);
+searchWithSteps(root, searchValue);
+printf("\nDo you want to search another value? (y/n): ");
+scanf(" %c", &choice); // Note the space before %c to consume newline
+} while (choice == 'y' || choice == 'Y');
+printf("\nThank you for using the BST search program!\n");
+return 0;
+}
